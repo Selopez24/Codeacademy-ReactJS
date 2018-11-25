@@ -251,3 +251,111 @@ ReactDOM.render(
   <MyComponentClass />,
   document.getElementById('app')
 );
+
+
+// Use a Variable Attribute in a Component
+
+const owl = {
+  title: 'Excellent Owl',
+  src: 'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-owl.jpg'
+};
+
+class Owl extends React.Component{
+  render(){
+    return (
+    <div>
+      <h1>{owl.title}</h1>
+      <img src = {owl.src} alt = {owl.alt} />
+    </div>  
+    );
+  }
+}
+
+ReactDOM.render(<Owl/>, document.getElementById('app'));
+
+
+// Put Logic in a Render Function
+
+const friends = [
+  {
+    title: "Yummmmmmm",
+    src: "https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-monkeyweirdo.jpg"
+  },
+  {
+    title: "Hey Guys!  Wait Up!",
+    src: "https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-earnestfrog.jpg"
+  },
+  {
+    title: "Yikes",
+    src: "https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-alpaca.jpg"
+  }
+];
+
+class Friend extends React.Component{
+  render(){
+
+    let friend = friends[2]
+
+    return(
+      <div>
+        <h1>{friend.title}</h1>
+        <img src = {friend.src}/>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(<Friend/>, document.getElementById('app'));
+
+// Use a Conditional in a Render Function
+
+const fiftyFifty = Math.random() < 0.5;
+
+class TonightsPlan extends React.Component{
+  render(){
+
+    let plan;
+
+    if (!fiftyFifty){
+      plan = 'Tonight I\'m going out WOOO'
+    }
+    else{
+      plan = 'Tonight I\'m going to bed WOOO'
+    }
+    return(
+      <h1>{plan}</h1>
+    );
+  }
+}
+
+ReactDOM.render(<TonightsPlan/>, document.getElementById('app'));
+
+// Use this in a Component 
+
+class MyName extends React.Component {
+	// name property goes here:
+  get name(){
+    return 'Maryan'
+  }
+
+  render() {
+    return <h1>My name is {this.name}.</h1>;
+  }
+}
+
+ReactDOM.render(<MyName />, document.getElementById('app'));
+
+// Use an Event Listener in a Component
+
+class Button extends React.Component {
+  scream() {
+    alert('AAAAAAAAHHH!!!!!');
+  }
+
+  render() {
+    return <button onClick ={this.scream}>AAAAAH!</button>;
+  }
+}
+
+ReactDOM.render(<Button/>, document.getElementById('app'));
+
