@@ -393,4 +393,217 @@ ReactDOM.render(<Button/>, document.getElementById('app'));
   }
 }
 
-ReactDOM.render(<ProfilePage/>,document.getElementById('app') );
+ReactDOM.render(<ProfilePage/>,document.getElementById('app'));
+
+/*
+ *THIS.PROPS 
+*/
+
+//Access a Component's props
+
+class PropsDisplayer extends React.Component {
+  render() {
+  	const stringProps = JSON.stringify(this.props);
+
+    return (
+      <div>
+        <h1>CHECK OUT MY PROPS OBJECT</h1>
+        <h2>{stringProps}</h2>
+      </div>
+    );
+  }
+}
+
+// ReactDOM.render goes here:
+ReactDOM.render(<PropsDisplayer/>, document.getElementById('app'));
+
+// Pass `props` to a Component
+
+ReactDOM.render(<PropsDisplayer myProp = "Hello"/>, document.getElementById('app'));
+
+// Render a Component's props
+
+class Greeting extends React.Component {
+  render() {
+    return <h1>Hi there, {this.props.firstName}!</h1>;
+  }
+}
+
+ReactDOM.render(
+  <Greeting firstName='Maryan' />, 
+  document.getElementById('app')
+);
+
+// Pass props From Component To Component
+
+export class Greeting extends React.Component {
+  render() {
+    return <h1>Hi there, {this.props.name}!</h1>;
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>
+          Hullo and, "Welcome to The Newzz," "On Line!"
+        </h1>
+      	<Greeting name = "Maryan"/>
+        
+        <article>
+          Latest newzz:  where is my phone?
+        </article>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <App />, 
+  document.getElementById('app')
+);
+
+// Render Different UI Based on props
+
+export class Greeting extends React.Component {
+  render() {
+  	if (this.props.signedIn == false) { // make a decison 
+  	  return <h1>GO AWAY</h1>;
+  	} else {
+  	  return <h1>Hi there, {this.props.name}!</h1>;
+  	}
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <h1>
+          Hullo and, "Welcome to The Newzz," "On Line!"
+        </h1>
+        <Greeting name="Alison" signedIn = {true} />
+        <article>
+          Latest:  where is my phone?
+        </article>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <App />, 
+  document.getElementById('app')
+);
+
+// Put an Event Handler in a Component Class
+
+class Example extends React.Component {
+  handleEvent() {
+    alert(`I am an event handler.
+      If you see this message,
+      then I have been called.`);
+  }
+
+  render() {
+    return (
+      <h1 onClick={this.handleEvent}>
+        Hello world
+      </h1>
+    );
+  }
+}
+
+// Pass an Event Handler as a prop
+
+class Talker extends React.Component {
+  talk() {
+    let speech = '';
+    for (let i = 0; i < 10000; i++) {
+      speech += 'blah ';
+    }
+    alert(speech);
+  }
+  
+  render() {
+    return <Button talk={this.talk} />;
+  }
+}
+
+ReactDOM.render(
+  <Talker />,
+  document.getElementById('app')
+);
+
+// Receive an Event Handler as a prop
+
+export class Button extends React.Component {
+  render() {
+    return (
+      <button onClick = {this.props.talk}>
+        Click me!
+      </button>
+    );
+  }
+}
+
+class Talker extends React.Component {
+  talk() {
+    let speech = '';
+    for (let i = 0; i < 10000; i++) {
+      speech += 'blah ';
+    }
+    alert(speech);
+  }
+  
+  render() {
+    return <Button talk={this.talk} />;
+  }
+}
+
+ReactDOM.render(
+  <Talker />,
+  document.getElementById('app')
+);
+
+// handleEvent{function/method}, onEvent{props}, and this.props.onEvent //
+
+
+// this.props.children will return everything in between a component's opening and closing JSX tags.
+
+export class List extends React.Component {
+  render() {
+    let titleText = `Favorite ${this.props.type}`;
+    if (this.props.children instanceof Array) { // adds a "s" if there are more than one element in list
+    	titleText += 's';
+    }
+    return (
+      <div>
+        <h1>{titleText}</h1>
+        <ul>{this.props.children}</ul>
+      </div>
+    );
+  }
+}
+
+class App extends React.Component {
+  render() {
+    return (
+      <div>
+        <List type='Living Musician'>
+          <li>Sachiko M</li>
+          <li>Harvey Sid Fisher</li>
+        </List>
+        <List type='Living Cat Musician'>
+          <li>Nora the Piano Cat</li>
+        </List>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <App />, 
+  document.getElementById('app')
+);
