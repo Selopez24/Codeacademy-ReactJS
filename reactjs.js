@@ -746,3 +746,6 @@ A React app is basically just a lot of components, setting state and passing pro
 In future lessons, the focus will shift slightly outward. In addition to learning more new skills, you'll also learn your first programming patterns. These large-scale strategies will help you combine what you've learned and really start building.
  */
 
+
+
+ /*Learn ReactJS: Part II */
