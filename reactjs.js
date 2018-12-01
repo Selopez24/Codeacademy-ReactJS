@@ -549,7 +549,7 @@ export class Button extends React.Component {
 }
 
 class Talker extends React.Component {
-  talk() {
+  handleClick() {
     let speech = '';
     for (let i = 0; i < 10000; i++) {
       speech += 'blah ';
@@ -558,7 +558,7 @@ class Talker extends React.Component {
   }
   
   render() {
-    return <Button talk={this.talk} />;
+    return <Button onClick={this.handleClick} />;
   }
 }
 
@@ -632,7 +632,8 @@ ReactDOM.render(
 /*this.props Recap
 That completes our lesson on props!
 
-props is quite possibly the longest and most difficult lesson in all of our React courses. Congratulations on getting this far!
+props is quite possibly the longest and most difficult lesson in all of our React courses. Congratulations on getting this 
+far!
 
 Here are some of the skills that you have learned:
 
@@ -646,4 +647,102 @@ Receiving a prop event handler and attaching it to an event listener
 Naming event handlers and event handler attributes according to convention
 this.props.children
 getDefaultProps */
+
+
+
+
+/**
+ *  
+ * THIS.STATE
+ * 
+ * */
+
+ // Setting Initial State
+
+
+
+class App extends React.Component {
+	// constructor method begins here:
+  constructor(props){
+    super(props)
+    this.state = {title: 'Best App'}
+  }
+	
+  render() {
+    return (
+      <h1>
+        Wow this entire app is just an h1.
+      </h1>
+    );
+  }
+}
+
+// Access a Component's state
+
+class App extends React.Component {
+	// constructor method begins here: q
+  constructor(props){
+    super(props)
+    this.state = {title: 'Best App'}
+  }
+	
+  render() {
+    return (
+      // just like in props
+      <h1> 
+       {this.state.title}
+      </h1>
+    );
+  }
+}
+
+// Update state with this.setstate
+
+this.setState({ hungry: true });
+
+// Call this.setState from Another Function
+//  When you write a component class method that uses this, 
+// then you need to bind that method inside of your constructor function!
+
+const green = '#39D1B4';
+const yellow = '#FFD712';
+
+class Toggle extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {color : green}
+    this.changeColor = this.changeColor.bind(this);
+  }
+  changeColor(){
+    const newColor = this.state.color == green ? yellow : green;
+    this.setState({color: newColor});
+  }
+  render() {
+    return (
+      <div style={{background: this.state.color}}>
+        <h1>
+          Change my color
+        </h1>
+        <button onClick ={this.changeColor}>
+          Change color
+        </button>
+      </div>
+    );
+  }
+}
+
+// this.setState Automatically Calls render
+
+//Any time that you call this.setState(), this.setState() AUTOMATICALLY calls .render() as soon as the state has changed.
+
+/**
+ * Components Interacting Recap
+In this unit, you learned how to use import and export to access one file from another. You learned about props and state, and the countless variations on how they work.
+
+Before this unit, you learned about JSX, components, and how they can work together.
+
+A React app is basically just a lot of components, setting state and passing props to one another. Now that you have a real understanding of how to use props and state, you have by far the most important tools that you need!
+
+In future lessons, the focus will shift slightly outward. In addition to learning more new skills, you'll also learn your first programming patterns. These large-scale strategies will help you combine what you've learned and really start building.
+ */
 
