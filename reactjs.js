@@ -744,8 +744,52 @@ Before this unit, you learned about JSX, components, and how they can work toget
 A React app is basically just a lot of components, setting state and passing props to one another. Now that you have a real understanding of how to use props and state, you have by far the most important tools that you need!
 
 In future lessons, the focus will shift slightly outward. In addition to learning more new skills, you'll also learn your first programming patterns. These large-scale strategies will help you combine what you've learned and really start building.
- */
+*/
 
 
 
  /*Learn ReactJS: Part II */
+
+ // STATELESS COMPONENTS FROM STATEFUL COMPONENTS
+
+ // Stateless Components Inherit From Stateful Components
+
+ // In our pattern, a stateful component passes its state down to a stateless component.
+
+ // Stateful
+
+ class Parent extends React.Component{
+   constructor(props){
+     super(props)
+     this.state = {name: 'Frarthur'}
+   }
+   render(){
+    return <div></div>;
+  }
+}
+
+// Stateless
+
+export class Child extends React.Component{
+  render(){
+    return <h1>Hey, my name is {this.props.name}</h1>
+  }
+}
+
+// Pass a Component's State
+
+class Parent extends React.Component{
+  constructor(props){
+    super(props)
+    this.state = {name: 'Frarthur'}
+  }
+  render(){
+   return <Child name={this.state.name}/>;
+ }
+}
+ReactDOM.render(
+  <Parent />,
+  document.getElementById('app')
+);
+
+/* CHILD COMPONENTS UPDATE THEIR PARENTS' STATE*/
