@@ -793,3 +793,398 @@ ReactDOM.render(
 );
 
 /* CHILD COMPONENTS UPDATE THEIR PARENTS' STATE*/
+
+//Define an Event Handler
+
+class Parent extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { name: 'Frarthur' };
+    this.changeName = this.changeName.bind(this)
+  }
+
+  changeName(newName){
+    this.setState({name: newName});
+  }
+
+  render() {
+    return <Child name={this.state.name} onChange ={this.changeName} />
+  }
+}
+
+ReactDOM.render(
+	<Parent />,
+	document.getElementById('app')
+);
+
+export class Child extends React.Component {
+  constructor(props){
+    super(props);
+    this.handleChange = this.handleChange.bind(this)
+  }
+  handleChange(e){
+    const name = e.target.value;
+    this.props.onChange(name);
+  }
+  render() {
+    return (
+      <div>
+        <h1>
+          Hey my name is {this.props.name}!
+        </h1>
+        <select id="great-names" onChange={this.handleChange}> 
+          <option value="Frarthur">
+            Frarthur
+          </option>
+
+          <option value="Gromulus">
+            Gromulus
+          </option>
+
+          <option value="Thinkpiece">
+            Thinkpiece
+          </option>
+        </select>
+      </div>
+    );
+  }
+}
+
+/**Child Components Update Sibling Components*/
+
+class Parent extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { name: 'Frarthur' };
+
+    this.changeName = this.changeName.bind(this);
+  }
+
+  changeName(newName) {
+    this.setState({
+      name: newName
+    });
+  }
+
+  render() {
+    return (
+      <div>
+        <Child onChange={this.changeName} />
+        <Sibling name = {this.state.name}/>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <Parent />,
+  document.getElementById('app')
+);
+export class Child extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.handleChange = this.handleChange.bind(this);
+  }
+
+  handleChange(e) {
+    const name = e.target.value;
+    this.props.onChange(name);
+  }
+
+  render() {
+    return (
+      <div>
+        <select
+          id="great-names"
+          onChange={this.handleChange}>
+
+          <option value="Frarthur">Frarthur</option>
+          <option value="Gromulus">Gromulus</option>
+          <option value="Thinkpiece">Thinkpiece</option>
+        </select>
+      </div>
+    );
+  }
+}
+
+export class Sibling extends React.Component {
+  render() {
+    const name = this.props.name;
+    return (
+      <div>
+        <h1>Hey, my name is {name}!</h1>
+        <h2>Don't you think {name} is the prettiest name ever?</h2>
+        <h2>Sure am glad that my parents picked {name}!</h2>
+      </div>
+    );
+  }
+}
+
+
+/* STYLE */
+
+
+const styleMe = <h1 style={{background: 'lightblue', color: 'darkred'}}>Please style me! I am so bland!</h1>;
+
+ReactDOM.render(
+	styleMe, 
+	document.getElementById('app')
+);
+
+// Make A Style Object Variable
+
+ const styles ={
+  background: 'lightblue',
+  color:  'darkred'
+};
+
+const styleMe = <h1 style={}styles>Please style me! I am so bland!</h1>;
+
+ReactDOM.render(
+	styleMe, 
+	document.getElementById('app')
+);
+
+//Style Name Syntax
+
+// regular JS
+const styles = {
+  'margin-top':       "20px",
+  'background-color': "green"
+};
+
+// ReactJS
+const styles = {
+  marginTop:       "20px",
+  backgroundColor: "green"
+};
+
+// Share Styles Across Multiple Components
+
+const fontFamily = 'Comic Sans MS, Lucida Handwriting, cursive';
+const background = 'pink url("https://media.giphy.com/media/oyr89uTOBNVbG/giphy.gif") fixed';
+const fontSize = '4em';
+const padding = '45px 0';
+const color = 'green';
+
+export const styles = {  // export all in an object
+  fontFamily: fontFamily,
+  background: background,
+  fontSize:   fontSize,
+  padding:    padding,
+  color:      color
+};
+
+//Separate Container Components From Presentational Components: Explanation
+
+// Presentational component always rendered by a container component
+
+//BEFORE:
+
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+const GUINEAPATHS = [
+  'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-guineapig-1.jpg',
+  'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-guineapig-2.jpg',
+  'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-guineapig-3.jpg',
+  'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-guineapig-4.jpg'
+];
+
+export class GuineaPigs extends React.Component { // this does too many things!
+  constructor(props) {
+    super(props);
+
+    this.state = { currentGP: 0 };
+
+    this.interval = null;
+
+    this.nextGP = this.nextGP.bind(this);
+  }
+
+  nextGP() {
+    let current = this.state.currentGP;
+    let next = ++current % GUINEAPATHS.length;
+    this.setState({ currentGP: next });
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(this.nextGP, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  render() {
+    let src = GUINEAPATHS[this.state.currentGP];
+    return (
+      <div>
+        <h1>Cute Guinea Pigs</h1>
+        <img src={src} />
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+  <GuineaPigs />, 
+  document.getElementById('app')
+);
+
+// AFTER: 
+
+const GUINEAPATHS = [
+  'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-guineapig-1.jpg',
+  'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-guineapig-2.jpg',
+  'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-guineapig-3.jpg',
+  'https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-guineapig-4.jpg'
+];
+
+class GuineaPigsContainer extends React.Component {
+  constructor(props) {
+    super(props);
+
+    this.state = { currentGP: 0 };
+
+    this.interval = null;
+
+    this.nextGP = this.nextGP.bind(this);
+  }
+
+  nextGP() {
+    let current = this.state.currentGP;
+    let next = ++current % GUINEAPATHS.length;
+    this.setState({ currentGP: next });
+  }
+
+  componentDidMount() {
+    this.interval = setInterval(this.nextGP, 5000);
+  }
+
+  componentWillUnmount() {
+    clearInterval(this.interval);
+  }
+
+  render() {
+    let src = GUINEAPATHS[this.state.currentGP];
+    return <GuineaPigs src={src}/>;
+  }
+}
+
+ReactDOM.render(
+  <GuineaPigsContainer />,
+  document.getElementById('app')
+);
+
+
+export class GuineaPigs extends React.Component {
+  render() {
+    let src = this.props.src;
+    return (
+      <div>
+        <h1>Cute Guinea Pigs</h1>
+        <img src={src} />
+      </div>
+    );
+  }
+}
+
+
+// Stateless Functional Components
+
+export class Friend extends React.Component {
+	render() {
+		return <img src='https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-octopus.jpg' />;
+	}
+}
+
+ReactDOM.render(
+	<Friend />,
+	document.getElementById('app')
+);
+
+// new
+
+export const Friend = () => {
+  return <img src='https://s3.amazonaws.com/codecademy-content/courses/React/react_photo-octopus.jpg' />;
+}
+
+// Stateless Functional Components and Props
+
+export const GuineaPigs = (props) =>{
+  let src = props.src;
+  return(
+    <div>
+      <h1>Cute Guinea Pigs</h1>
+      <img src={src}/>
+    </div>
+  );
+}
+
+/* propTypes */
+
+export class BestSeller extends React.Component {
+  render() {
+    return (
+      <li>
+        Title: <span>
+          {this.props.title}
+        </span><br />
+        
+        Author: <span>
+          {this.props.author}
+        </span><br />
+        
+        Weeks: <span>
+          {this.props.weeksOnList}
+        </span>
+      </li>
+    );
+  }
+}
+
+BestSeller.propTypes = {
+  title:   React.PropTypes.string.isRequired,
+  author:	 React.PropTypes.string.isRequired,
+  weeksOnList: React.PropTypes.number.isRequired
+
+};
+
+/*REACT FORMS*/
+
+// Input OnChange
+
+
+export class Input extends React.Component {
+  constructor(props){
+    super(props)
+    this.state ={ userInput :''}
+    this.handleUserInput = this.handleUserInput.bind(this)
+  }
+  handleUserInput(e){ // event listener
+    this.setState({userInput : e.target.value})
+  }
+  render() { // Value = set value on input
+    return (
+      <div>
+        <input type="text" onChange={this.handleUserInput} value={this.state.userInput} /> 
+        <h1>{this.state.userInput}</h1>
+      </div>
+    );
+  }
+}
+
+ReactDOM.render(
+	<Input />,
+	document.getElementById('app')
+);
+
+
+/* MOUNTING LIFECYCLE METHODS */
+
+// A component "mounts" when it renders for the first time. 
+
